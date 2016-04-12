@@ -9,7 +9,7 @@ describe Twitch do
     @scope = ["user_read", "channel_read", "channel_editor", "channel_commercial", "channel_stream", "user_blocks_edit"]
     @scope_str = ""
     @scope.each{ |s| @scope_str += s + "+" }
-    @access_token = ""
+    @access_token = "abcdefg123"
   end
 
 	it 'should build accurate link' do
@@ -24,16 +24,19 @@ describe Twitch do
 
 	it 'should get user (not authenticated)' do
 		@t = Twitch.new()
+		stub_get('/users/day9').to_return(body: fixture('user.json'), headers: {content_type: 'application/json; charset=utf-8'})
 		expect( @t.user("day9")[:response] ).to eq 200
 	end
 
 	it 'should get user (authenticated)' do
 		@t = Twitch.new({:access_token => @access_token})
+		stub_get("/users/day9").to_return(body: fixture('user.json'), headers: {content_type: 'application/json; charset=utf-8'})
 		expect( @t.user("day9")[:response] ).to eq 200
 	end
 
 	it 'should get authenticated user' do
 		@t = Twitch.new({:access_token => @access_token})
+		stub_get("/user?oauth_token=#{@access_token}").to_return(body: fixture('user.json'), headers: {content_type: 'application/json; charset=utf-8'})
 		expect( @t.user()[:response] ).to eq 200
 	end
 

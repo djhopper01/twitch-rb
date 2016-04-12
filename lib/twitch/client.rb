@@ -6,6 +6,8 @@ module Twitch
     include Twitch::Request
     include Twitch::Adapters
 
+    BASE_URL = "https://api.twitch.tv/kraken"
+
     def initialize(options = {})
       @client_id = options[:client_id] || nil
       @secret_key = options[:secret_key] || nil
@@ -15,7 +17,7 @@ module Twitch
 
       @adapter = get_adapter(options[:adapter] || nil)
 
-      @base_url = "https://api.twitch.tv/kraken"
+      @base_url = BASE_URL
     end
 
     attr_reader :base_url, :redirect_url, :scope
